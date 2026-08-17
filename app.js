@@ -240,6 +240,22 @@ const lessonSources = {
   restraints: ['Virginia Driver’s Manual — Section 4: Occupant Safety', 27],
   penalties: ['Virginia Driver’s Manual — Section 5: Penalties', 29]
 };
+const lessonSlugs = {
+  exam: 'testing-and-vision',
+  signs: 'road-signs',
+  rightway: 'right-of-way',
+  speed: 'speed-limits',
+  school: 'school-buses',
+  permit: 'permits-and-licenses',
+  signals: 'signals-and-markings',
+  control: 'vehicle-control',
+  sharing: 'sharing-the-road',
+  conditions: 'weather-and-night',
+  behavior: 'driver-condition',
+  emergencies: 'crashes-and-hazards',
+  restraints: 'occupant-safety',
+  penalties: 'laws-and-penalties'
+};
 
 let quizState = null;
 
@@ -294,26 +310,44 @@ function setAccessPanel(open) {
 }
 
 function route(shouldFocus = false) {
-  const requestedId = location.hash.slice(1) || 'home';
-  const id = ['home', 'study', 'practice'].includes(requestedId) ? requestedId : 'home';
-  if (id !== requestedId) history.replaceState(null, '', '#home');
+  const legacyRoutes={home:'/',study:'/study/road-signs',practice:'/practice'};
+  if(legacyRoutes[location.hash.slice(1)]) history.replaceState(null,'',legacyRoutes[location.hash.slice(1)]);
+  const requestedPath=location.pathname.replace(/\/+$/,'')||'/';
+  const studyMatch=requestedPath.match(/^\/study\/([^/]+)$/);
+  let id='home', lessonId=null;
+  if(requestedPath==='/practice') id='practice';
+  else if(requestedPath==='/study'){
+    history.replaceState(null,'','/study/road-signs');
+    id='study';lessonId='signs';
+  } else if(studyMatch){
+    lessonId=Object.keys(lessonSlugs).find(key=>lessonSlugs[key]===studyMatch[1]);
+    if(lessonId) id='study'; else history.replaceState(null,'','/');
+  } else if(requestedPath!=='/') history.replaceState(null,'','/');
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id));
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', a.dataset.nav === id));
+  if(lessonId) showLesson(lessonId);
+  const canonicalUrl=new URL(location.pathname,location.origin).href;
+  document.querySelector('link[rel="canonical"]').href=canonicalUrl;
+  document.querySelector('meta[property="og:url"]').content=canonicalUrl;
+  document.title=lessonId?`${lessons.find(lesson=>lesson.id===lessonId).title} — Virginia Permit Prep`:id==='practice'?`Practice Test — Virginia Permit Prep`:`Virginia Permit Prep — Learner's Permit Study Guide`;
   scrollTo(0,0);
   if(shouldFocus){const heading=document.querySelector(`#${id} h1, #${id} h2`);if(heading){heading.tabIndex=-1;heading.focus();}}
+}
+
+function navigate(path){
+  if(location.pathname!==path) history.pushState(null,'',path);
+  route(true);
 }
 
 function showLesson(id) {
   const lesson = lessons.find(x => x.id === id) || lessons[0];
   const [sourceLabel, sourcePage] = lessonSources[lesson.id];
-  document.querySelectorAll('.topic-list button').forEach(b => b.classList.toggle('active', b.dataset.lesson === lesson.id));
+  document.querySelectorAll('.topic-list [data-lesson]').forEach(link => link.classList.toggle('active', link.dataset.lesson === lesson.id));
   $('#lesson-card').innerHTML = `<p class="eyebrow">${lesson.label}</p><h3>${lesson.title}</h3><p class="summary">${lesson.summary}</p><div class="fact-grid">${lesson.facts.map(f=>`<div class="fact"><strong>${f[0]}</strong><span>${f[1]}</span></div>`).join('')}</div><div class="callout"><strong>${lesson.note[0]}</strong><span>${lesson.note[1]}</span></div><a class="lesson-source" href="${manualUrl}#page=${sourcePage}" target="_blank" rel="noopener">Source: ${sourceLabel} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>`;
 }
 
 function initLessons() {
-  $('#topic-list').innerHTML = lessons.map(l => `<button data-lesson="${l.id}">${l.label}</button>`).join('');
-  $('#topic-list').addEventListener('click', e => { if(e.target.dataset.lesson) showLesson(e.target.dataset.lesson); });
-  showLesson('exam');
+  $('#topic-list').innerHTML = lessons.map(lesson => `<a href="/study/${lessonSlugs[lesson.id]}" data-route data-lesson="${lesson.id}">${lesson.label}</a>`).join('');
 }
 
 function isSupplemental(question) {
@@ -362,7 +396,7 @@ function signPng(question) {
     ['winding-road','winding-road'],['crossbuck','railroad-crossbuck']
   ];
   const match=assets.find(([phrase])=>text.includes(phrase));
-  return `<img src="assets/signs/${match?match[1]:'warning'}.png" alt="" width="120" height="100">`;
+  return `<img src="/assets/signs/${match?match[1]:'warning'}.png" alt="" width="120" height="100">`;
 }
 
 function startQuiz(mode) {
@@ -430,7 +464,7 @@ function showResults(){
   const reviewButton = missed.length ? `<button class="button ghost" data-review aria-expanded="false">Review ${missed.length} missed ${missed.length===1?'question':'questions'}</button>` : '';
   const heading=s.terminated?'Sign section not passed.':passed?'You passed this round.':'Not yet—but now you know what bites.';
   const guidance=s.terminated?'The real Virginia exam ends Part 1 after a missed sign, so this simulation does too. Review it, then start a fresh attempt.':missed.length===0?'Perfect score. The goblins have been denied entry.':passed?'Nice. Review the misses so this is memory, not luck.':'Review the misses and try again. Wrong answers are useful when they happen here instead of at the DMV.';
-  $('#results').innerHTML=`<div class="results-summary"><p class="eyebrow">${passed?'Passing result':'Keep studying'}</p><h2>${heading}</h2><div class="score-ring" style="--score:${pct*3.6}deg"><span>${pct}%</span></div><p>${breakdown}</p><p>${guidance}</p><div class="result-actions">${reviewButton}<button class="button primary" data-retry="${s.mode}">Try again</button><button class="button ghost" data-choose-mode aria-label="Back to test selection">Back</button><a class="button ghost" href="#study">Review guide</a></div></div>${missed.length?`<section class="missed-review hidden" id="missed-review" aria-label="Missed questions"><div class="review-heading"><p class="eyebrow">Answer review</p><h2>What tripped you up</h2></div>${review}</section>`:''}`;
+  $('#results').innerHTML=`<div class="results-summary"><p class="eyebrow">${passed?'Passing result':'Keep studying'}</p><h2>${heading}</h2><div class="score-ring" style="--score:${pct*3.6}deg"><span>${pct}%</span></div><p>${breakdown}</p><p>${guidance}</p><div class="result-actions">${reviewButton}<button class="button primary" data-retry="${s.mode}">Try again</button><button class="button ghost" data-choose-mode aria-label="Back to test selection">Back</button><a class="button ghost" href="/study/road-signs" data-route>Review guide</a></div></div>${missed.length?`<section class="missed-review hidden" id="missed-review" aria-label="Missed questions"><div class="review-heading"><p class="eyebrow">Answer review</p><h2>What tripped you up</h2></div>${review}</section>`:''}`;
   showBest();
   const resultsHeading=$('#results h2');resultsHeading.tabIndex=-1;resultsHeading.focus();
 }
@@ -459,8 +493,8 @@ async function reportQuestion() {
   }
 }
 
-addEventListener('hashchange',()=>{route(true);if(location.hash==='#practice'&&!quizState)resetQuiz();});
-document.addEventListener('click',e=>{const skip=e.target.closest('.skip-link');if(skip){e.preventDefault();$('#main-content').focus();}const mode=e.target.closest('[data-mode]');if(mode)startQuiz(mode.dataset.mode);const answer=e.target.closest('[data-answer]');if(answer)answerQuestion(Number(answer.dataset.answer));const report=e.target.closest('[data-report-question]');if(report)reportQuestion();const retry=e.target.closest('[data-retry]');if(retry)startQuiz(retry.dataset.retry);const chooseMode=e.target.closest('[data-choose-mode]');if(chooseMode)resetQuiz(true);const review=e.target.closest('[data-review]');if(review){const panel=$('#missed-review');const opening=panel.classList.contains('hidden');panel.classList.toggle('hidden');review.setAttribute('aria-expanded',String(opening));review.textContent=opening?'Hide missed questions':`Review ${panel.querySelectorAll('.missed-card').length} missed questions`;if(opening)panel.scrollIntoView({behavior:'smooth',block:'start'});}});
+addEventListener('popstate',()=>{route(true);if(location.pathname==='/practice'&&!quizState)resetQuiz();});
+document.addEventListener('click',e=>{const routeLink=e.target.closest('[data-route]');if(routeLink&&!e.defaultPrevented&&e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();navigate(new URL(routeLink.href,location.origin).pathname);}const skip=e.target.closest('.skip-link');if(skip){e.preventDefault();$('#main-content').focus();}const mode=e.target.closest('[data-mode]');if(mode)startQuiz(mode.dataset.mode);const answer=e.target.closest('[data-answer]');if(answer)answerQuestion(Number(answer.dataset.answer));const report=e.target.closest('[data-report-question]');if(report)reportQuestion();const retry=e.target.closest('[data-retry]');if(retry)startQuiz(retry.dataset.retry);const chooseMode=e.target.closest('[data-choose-mode]');if(chooseMode)resetQuiz(true);const review=e.target.closest('[data-review]');if(review){const panel=$('#missed-review');const opening=panel.classList.contains('hidden');panel.classList.toggle('hidden');review.setAttribute('aria-expanded',String(opening));review.textContent=opening?'Hide missed questions':`Review ${panel.querySelectorAll('.missed-card').length} missed questions`;if(opening)panel.scrollIntoView({behavior:'smooth',block:'start'});}});
 document.querySelector('[data-nav="practice"]').addEventListener('click',()=>resetQuiz());
 $('#next-button').addEventListener('click',nextQuestion);
 $('#theme-toggle').addEventListener('click',toggleTheme);

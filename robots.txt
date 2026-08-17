@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://va-permit-prep.vastudy.workers.dev/sitemap.xml

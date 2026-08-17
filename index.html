@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102c3b">
+  <meta name="description" content="Study Virginia road signs and driving rules with 129 practice questions, clear explanations, and a realistic two-part learner's permit test simulator.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://va-permit-prep.vastudy.workers.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Virginia Permit Prep">
+  <meta property="og:description" content="A free Virginia learner's permit study guide with road-sign practice, explanations, and a realistic exam simulator.">
+  <meta property="og:url" content="https://va-permit-prep.vastudy.workers.dev/">
+  <meta property="og:image" content="https://va-permit-prep.vastudy.workers.dev/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Virginia Permit Prep">
+  <meta name="twitter:description" content="Study Virginia road signs and driving rules with a free two-part practice exam.">
+  <meta name="twitter:image" content="https://va-permit-prep.vastudy.workers.dev/social-preview.png">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="favicon-192.png">
+  <link rel="manifest" href="site.webmanifest">
+  <title>Virginia Permit Prep — Learner's Permit Study Guide</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"LearningResource","name":"Virginia Permit Prep","url":"https://va-permit-prep.vastudy.workers.dev/","description":"An unofficial Virginia learner's permit study guide and practice exam.","educationalLevel":"Beginner","learningResourceType":["Study guide","Practice test"],"inLanguage":"en-US","isAccessibleForFree":true}
+  </script>
+</head>
+<body data-feedback-email="va.permit.prep@proton.me">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Virginia Permit Prep home">
+      <span class="brand-mark">VA</span>
+      <span>Virginia Permit Prep</span>
+    </a>
+    <div class="header-actions">
+      <nav aria-label="Main navigation">
+        <a href="#home" data-nav="home">Home</a>
+        <a href="#study" data-nav="study">Study</a>
+        <a href="#practice" data-nav="practice">Practice</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+        <span class="theme-icon" aria-hidden="true">☾</span>
+      </button>
+      <button class="access-toggle" id="access-toggle" type="button" aria-label="Accessibility settings" aria-expanded="false" aria-controls="access-panel">
+        <span aria-hidden="true">Aa</span><span>Accessibility</span>
+      </button>
+    </div>
+  </header>
+  <section class="access-panel" id="access-panel" aria-labelledby="access-title" hidden>
+    <div class="access-panel-head"><h2 id="access-title">Accessibility</h2><button id="access-close" type="button" aria-label="Close accessibility settings">×</button></div>
+    <p>Adjust this site without changing your browser settings.</p>
+    <div class="access-options">
+      <button type="button" data-access-setting="largeText" aria-pressed="false"><span aria-hidden="true">A+</span><strong>Larger text</strong></button>
+      <button type="button" data-access-setting="highContrast" aria-pressed="false"><span aria-hidden="true">◐</span><strong>High contrast</strong></button>
+      <button type="button" data-access-setting="reduceMotion" aria-pressed="false"><span aria-hidden="true">≈</span><strong>Reduce motion</strong></button>
+    </div>
+  </section>
+
+  <main id="main-content" tabindex="-1">
+    <section class="page hero-page active" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">Virginia learner's permit</p>
+        <h1>Pass the permit test.<br><em>Keep the beach day.</em></h1>
+        <p class="lede">A focused guide to Virginia signs, road rules, and the facts the knowledge exam actually tests.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#practice">Start practice <span>→</span></a>
+          <a class="button ghost" href="#study">Review the guide</a>
+        </div>
+      </div>
+      <div class="road-card" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="cloud cloud-one"></div>
+        <div class="cloud cloud-two"></div>
+        <div class="sign-post"><span>STUDY<br>ZONE</span></div>
+        <div class="road"><i></i><i></i><i></i></div>
+      </div>
+      <div class="exam-strip">
+        <div><strong>10 / 10</strong><span>signs required</span></div>
+        <div><strong>24 / 30</strong><span>general required</span></div>
+        <div><strong>15½</strong><span>minimum permit age</span></div>
+      </div>
+      <section class="launch-note" aria-labelledby="about-guide">
+        <div><p class="eyebrow">Free and unofficial</p><h2 id="about-guide">Practice the Virginia knowledge test</h2></div>
+        <div><p>Virginia's knowledge exam starts with 10 road-sign questions requiring a perfect score. Drivers who pass continue to 30 general-knowledge questions and need at least 24 correct.</p><p>This guide follows the Virginia Driver's Manual but is not affiliated with or endorsed by Virginia DMV. Always use the official manual as the final authority.</p></div>
+      </section>
+    </section>
+
+    <section class="page" id="study">
+      <div class="page-heading">
+        <div><p class="eyebrow">The useful bits</p><h2>Study guide</h2></div>
+        <p>Tap a section. Read it. Pretend not to enjoy learning what a pink road sign means.</p>
+      </div>
+      <div class="study-layout">
+        <aside class="topic-list" id="topic-list"></aside>
+        <article class="lesson-card" id="lesson-card"></article>
+      </div>
+    </section>
+
+    <section class="page" id="practice">
+      <div class="practice-shell">
+        <div class="quiz-intro" id="quiz-intro">
+          <p class="eyebrow">Exam simulator</p>
+          <h2>Ready to test yourself?</h2>
+          <p>Choose a quick mixed round or the Virginia-style two-part exam. Questions are drawn from this guide and reshuffled each time.</p>
+          <div class="trust-note"><strong>Unofficial study supplement</strong><span>Content reviewed against the Virginia Driver's Manual on August 16, 2026. Rules can change; verify important requirements with DMV.</span></div>
+          <div class="mode-grid">
+            <button class="mode-card" data-mode="quick"><span>⚡</span><strong>Quick round</strong><small>10 mixed questions</small></button>
+            <button class="mode-card featured" data-mode="exam"><span>✓</span><strong>Full simulation</strong><small>10 signs + 30 general</small></button>
+          </div>
+          <p class="best-score" id="best-score"></p>
+        </div>
+        <div class="quiz hidden" id="quiz">
+          <div class="quiz-topline">
+            <span id="quiz-section">Practice</span>
+            <span id="quiz-count">Question 1 of 10</span>
+          </div>
+          <div class="progress-track"><div id="progress-bar"></div></div>
+          <div class="question-wrap">
+            <div class="question-icon" id="question-icon" aria-hidden="true"></div>
+            <h2 id="question-text"></h2>
+            <div class="answers" id="answers"></div>
+            <div class="explanation hidden" id="explanation" role="status" aria-live="polite"></div>
+            <p class="report-status" id="report-status" role="status" aria-live="polite"></p>
+            <button class="button primary next-button hidden" id="next-button">Next question →</button>
+          </div>
+        </div>
+        <div class="results hidden" id="results" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for Virginia learners. Not affiliated with or endorsed by Virginia DMV.</p>
+    <p>Last content review: August 16, 2026 · Verify with the <a href="https://transactions.dmv.virginia.gov/dmv-manuals/#/manual/1" target="_blank" rel="noreferrer">official interactive Virginia Driver's Manual ↗</a></p>
+    <p>Questions or corrections: <a href="mailto:va.permit.prep@proton.me">va.permit.prep@proton.me</a></p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

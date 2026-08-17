@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f6f1e7"/>
+  <circle cx="1040" cy="120" r="70" fill="#f4c95d"/>
+  <path d="M830 630 945 285h90l115 345Z" fill="#45565a"/>
+  <path d="M990 310v75m22 56v75m24 58v56" stroke="#f6e39b" stroke-width="15"/>
+  <path d="M120 130h92v92h-92z" transform="rotate(45 166 176)" fill="#f4c95d" stroke="#102c3b" stroke-width="8"/>
+  <text x="100" y="350" fill="#102c3b" font-family="Georgia,serif" font-weight="700" font-size="82">Virginia Permit Prep</text>
+  <text x="104" y="420" fill="#52666f" font-family="system-ui,sans-serif" font-size="34">Study the signs. Learn the rules. Pass the test.</text>
+  <text x="105" y="500" fill="#b84232" font-family="system-ui,sans-serif" font-weight="700" font-size="24">129 PRACTICE QUESTIONS · REALISTIC TWO-PART SIMULATION</text>
+</svg>

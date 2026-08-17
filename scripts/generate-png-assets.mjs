@@ -27,7 +27,19 @@ const signs = {
   'speed-limit': 'A vertical rectangular sign usually gives:',
   'do-not-enter': 'A DO NOT ENTER or WRONG WAY sign means:',
   'winding-road': 'A winding-road warning sign means you should:',
-  'railroad-crossbuck': 'A railroad crossbuck warns that:'
+  'railroad-crossbuck': 'A railroad crossbuck warns that:',
+  'lane-red-x': { q: 'What does a red X above a lane mean?', visual: 'lane-red-x' },
+  'dark-signal': { q: 'What should you do at a traffic signal that is completely dark?', visual: 'dark-signal' },
+  'steady-yellow-signal': { q: 'A traffic light turns yellow as you approach.', visual: 'steady-yellow-signal' },
+  'broken-yellow-line': { q: 'A broken yellow center line means:', visual: 'broken-yellow-line' },
+  'double-yellow-lines': { q: 'Two solid yellow center lines mean:', visual: 'double-yellow-lines' },
+  'stop-line': { q: 'Where should you stop when there is a stop line?', visual: 'stop-line' },
+  'railroad-flashers': { q: 'At a railroad crossing with flashing red lights, you must:', visual: 'railroad-flashers' },
+  'flashing-yellow-signal': { q: 'What does a flashing yellow signal mean?', visual: 'flashing-yellow-signal' },
+  'lane-yellow-arrow': { q: 'A yellow diagonal downward arrow over a lane tells you to:', visual: 'lane-yellow-arrow' },
+  'mixed-yellow-lines': { q: 'A broken yellow line beside a solid yellow line means:', visual: 'mixed-yellow-lines' },
+  'hov-diamond': { q: 'A white diamond painted in a lane usually means:', visual: 'hov-diamond' },
+  'yellow-curb': { q: 'What does a yellow-painted curb generally mean?', visual: 'yellow-curb' }
 };
 
 const outputDir = new URL('../assets/signs/', import.meta.url);
@@ -43,8 +55,9 @@ function render(svg, output, width, height) {
   if (result.status !== 0) throw new Error(result.stderr.toString() || `Failed to render ${output}`);
 }
 
-for (const [name, q] of Object.entries(signs)) {
-  render(context.renderSign({ q }), new URL(`${name}.png`, outputDir).pathname, 240, 200);
+for (const [name, entry] of Object.entries(signs)) {
+  const question = typeof entry === 'string' ? { q: entry } : entry;
+  render(context.renderSign(question), new URL(`${name}.png`, outputDir).pathname, 240, 200);
 }
 
 const conversions = [

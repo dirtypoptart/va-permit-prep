@@ -1,4 +1,4 @@
-# VB Permit Prep
+# VA Permit Prep
 
 A dependency-free Virginia learner's permit study app built for Virginia Beach learners.
 

@@ -441,9 +441,22 @@ async function reportQuestion() {
   const s=quizState, q=s.questions[s.index], response=s.responses[s.index];
   const report=`Virginia Permit Prep question report\nTopic: ${q.topic||q.type}\nQuestion: ${q.q}\nDisplayed answers: ${q.a.join(' | ')}\nSelected: ${q.a[response.selected]}\nMarked correct: ${q.a[q.correct]}\nExplanation: ${q.why}`;
   const email=document.body.dataset.feedbackEmail.trim();
-  if(email){location.href=`mailto:${email}?subject=${encodeURIComponent('Virginia Permit Prep question report')}&body=${encodeURIComponent(report)}`;return;}
-  try{await navigator.clipboard.writeText(report);$('#report-status').textContent='Question details copied. Send them to the site owner.';}
-  catch{window.prompt('Copy these question details:',report);}
+  const status=$('#report-status');
+  try {
+    await navigator.clipboard.writeText(report);
+    status.textContent='Question details copied. ';
+  } catch {
+    window.prompt('Copy these question details:',report);
+    status.textContent='Use the copy dialog, then ';
+  }
+  if(email){
+    const emailLink=document.createElement('a');
+    emailLink.href=`mailto:${email}?subject=${encodeURIComponent('Virginia Permit Prep question report')}&body=${encodeURIComponent(report)}`;
+    emailLink.textContent='open an email draft.';
+    status.append(emailLink);
+  } else {
+    status.append('send them to the site owner.');
+  }
 }
 
 addEventListener('hashchange',()=>{route(true);if(location.hash==='#practice'&&!quizState)resetQuiz();});
